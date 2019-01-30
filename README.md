@@ -8,3 +8,6 @@
 ## DB
 * mongoDB@<a href="https://mlab.com/">mLib</a>
 * <a href="https://firebase.google.com/">Firebase</a>
+
+## Serverless
+* <a href="https://serverless-stack.com">Sample</a>
