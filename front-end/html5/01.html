@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>Document</title>
+   <style>
+
+      /**
+ * Drag and Drop Basic
+ **/
+
+[draggable="true"] {
+    /*
+   To prevent user selecting inside the drag source
+  */
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+#drag-drop-basic {
+    display: flex;
+}
+
+    #source-container {
+        height: 400px;
+        border: 2px solid #CCC;
+        flex: 1;
+        margin: 1rem;
+    }
+
+    #target-container {
+        height: 400px;
+        border: 2px solid #CCC;
+        flex: 1;
+        margin: 1rem;
+    }
+
+    #drag-source {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: steelblue;
+    }
+
+.dragging {
+  opacity: .25;
+}
+
+.hover {
+  background-color: rgba(0,191,165,.04);
+}
+
+   </style>
+
+   
+</head>
+<body>
+      <div id="drag-drop-basic">
+            <div id="source-container" data-role="drag-drop-container">
+              <div id="drag-source" draggable="true"></div>
+            </div>
+            <div id="target-container" data-role="drag-drop-container"></div>
+          </div>
+
+    <script>
+      /**
+ * Drag and Drop multiple elements in multiple sources 
+**/
+
+let sourceContainerId = ''
+
+// Allow multiple draggable items
+let dragSources = document.querySelectorAll('[draggable="true"]')
+
+dragSources.forEach(dragSource => {
+  dragSource.addEventListener('dragstart', dragStart)
+})
+
+// Allow multiple dropped targets
+let dropTargets = document.querySelectorAll('[data-role="drag-drop-container"]')
+dropTargets.forEach(dropTarget => {
+  dropTarget.addEventListener('drop', dropped)
+  dropTarget.addEventListener('dragenter', cancelDefault)
+  dropTarget.addEventListener('dragover', cancelDefault)
+})
+
+function cancelDefault (e) {
+  e.preventDefault()
+  e.stopPropagation()
+  return false
+}
+
+function dragStart (e) {
+  e.dataTransfer.setData('text/plain', e.target.id)
+  sourceContainerId = this.parentElement.id
+  this.classList.add('dragging')
+//   console.log('sourceContainerId', sourceContainerId)
+}
+
+
+function dragEnd (e) {
+  this.classList.remove('dragging')
+}
+
+function dropped (e) {
+
+  // execute function only when target container is different from source container
+  console.log(`id: ${this.id}`)
+  console.log(`sourceContainerId: ${sourceContainerId}`)
+  if (this.id !== sourceContainerId) {
+    cancelDefault(e)
+    let id = e.dataTransfer.getData('text/plain')
+    e.target.appendChild(document.querySelector('#' + id))
+  }
+}
+// End of Drag and Drop Basic
+
+      function dragstart_handler(ev) {
+  // Add the drag data
+  ev.dataTransfer.setData("text/plain", ev.target.id);
+  ev.dataTransfer.setData("text/html", "<p>Example paragraph</p>");
+  ev.dataTransfer.setData("text/uri-list", "http://developer.mozilla.org");
+}
+         </script>
+
+         
+</body>
+</html>
